@@ -10,6 +10,8 @@ class UserController {
       headers: {
         'Content-Type': 'application/json; charset=utf-8',
       },
+      
+      
     };
 
     if (body !== null) {
@@ -27,6 +29,15 @@ class UserController {
     return fetch(url, options);
   }
   
+
+  async deleteCourse(path,username,password){
+    console.log(`Passing username ${username} password ${password}`)
+
+    const response = await this.call_api(path,"DELETE",null,true,{username:username,password:password});
+    console.log(response);
+    return response.status;
+  }
+
   async getUser(username, password) {
     console.log(`calling getuser ${username} password ${password}`);
     const response = await this.call_api(`/users`, 'GET', null, true, { username, password });
