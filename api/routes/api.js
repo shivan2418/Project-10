@@ -223,7 +223,6 @@ check('description')
 // Deletes a course and returns no content
 router.delete("/courses/:id",authenticateUser, asyncHandler(async (req, res) => {
     console.log('Entered delete course')  ;
-  res.addHeader("Access-Control-Allow-Origin", "*");
 
     let course = await Course.findByPk(req.params.id);
     await course.destroy();
