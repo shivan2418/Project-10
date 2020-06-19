@@ -1,9 +1,9 @@
 "use strict";
+const cors = require('cors')
 
 // load modules
 const express = require("express");
 const morgan = require("morgan");
-var cors = require('cors')
 var indexRouter = require("./routes/index");
 var apiRouter = require("./routes/api");
 
@@ -19,10 +19,8 @@ const bodyParser = require("body-parser");
 
 // create the Express app
 const app = express();
-
 // Loads CORS
-app.use(cors())
-
+app.use(cors());
 
 // setup morgan which gives us http request logging
 app.use(morgan("dev"));
