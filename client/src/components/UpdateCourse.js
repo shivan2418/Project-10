@@ -53,16 +53,16 @@ class UpdateCourse extends Component {
   };
 
   render() {
-
+    var errors=''
     if (this.state.errors.length){
-      var errors = 
+      errors = 
+      <div>
+      <h2 className="validation--errors--label">Validation errors</h2>
       <ul className='validation-errors'>
         {this.state.errors.map( (item,index) => <li key={index}>{item}</li> )}
       </ul>
-    } else{
-      var errors = '';
+      </div>
     }
-
 
     if (this.state.course) {
       return (         
@@ -70,7 +70,7 @@ class UpdateCourse extends Component {
         <div className="bounds course--detail">
                   <h1>Update Course</h1>
         
-                  <div className='validation--errors--label'>
+                  <div className='errors'>
                     {errors}
                   </div>
                   <br/>
