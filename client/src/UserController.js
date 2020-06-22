@@ -63,10 +63,6 @@ class UserController {
       throw Error;
     }
 
-    console.log(response.status);
-
-    console.log(course);
-
   }
 
   async deleteCourse(path,username,password){
