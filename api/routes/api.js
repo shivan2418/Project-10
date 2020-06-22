@@ -48,9 +48,18 @@ const authenticateUser = async(req, res, next) => {
     const user = await User.findOne({where: {emailAddress:credentials.name}});
 
     if (user) {
-      const authenticated = bcryptjs
-        .compareSync(credentials.pass, user.password);
-      if (authenticated) {
+      
+      // First compare the hash of the plaintext password
+      let authenticated = bcryptjs.compareSync(credentials.pass, user.password);
+      
+      // If that fails then just compare the password since the password may be already hashed password
+      if (!authenticated){
+        console.log(`Authentication failed, retrying with unhashed`);
+        authenticated = (credentials.pass == user.password);
+      }
+    
+      
+        if (authenticated) {
         console.log(`Authentication successful for username: ${user.emailAddress}`);
 
         // Store the user on the Request object.
