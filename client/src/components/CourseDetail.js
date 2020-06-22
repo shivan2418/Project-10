@@ -1,7 +1,6 @@
 import React from 'react';
 import {Component} from 'react';
 import {Link} from 'react-router-dom';
-import config from '../config';
 const ReactMarkdown = require('react-markdown');
 
 class CourseDetail extends Component{
@@ -13,11 +12,13 @@ class CourseDetail extends Component{
 
 
   componentDidMount(){
+
     //Fetch the course
-    fetch(`${config.apiBaseUrl}/courses/${this.props.match.params.id}`)
+    const {context} = this.props;
+    context.userController.getCourse(this.props.match.params.id)
     .then(res => res.json())
     .then(res => this.setState({course:res}))
-
+    .catch(err => {this.props.history.push('/error')});
   }
 
   deleteCourse = async (e) => {
