@@ -1,4 +1,5 @@
 import React from "react";
+import config from '../config';
 const { Component } = require("react");
 
 class UpdateCourse extends Component {
@@ -9,13 +10,13 @@ class UpdateCourse extends Component {
   }
 
   componentDidMount() {
-    const { context } = this.props;
-    context.userController
-      .getCourse(this.props.match.params.id)
-      .then((res) => this.setState({course:res}))
-      .catch((err) => this.props.history.push("/error"));
-  }
 
+     //Fetch the course
+     fetch(`${config.apiBaseUrl}/courses/${this.props.match.params.id}`)
+     .then(res => res.json())
+     .then(res => this.setState({course:res}))
+  }
+  
   change = (event) => {
     const name = event.target.name;
     const value = event.target.value;
