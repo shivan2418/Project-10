@@ -4,20 +4,36 @@ class CreateCourse extends Component{
 
   constructor(props){
     super(props);
+    const {context} = this.props;
     this.state = {
       title:"",
       description:"",
       estimatedTime:"",
       materialsNeeded:"",
-      errors:[]
+      errors:[],
+      fullName: `${context.authenticatedUser.firstName} ${context.authenticatedUser.lastName}`
     }
   }
 
   submit = (e) => {
       e.preventDefault();
       
-  }
+      const {context} = this.props;
+      let username = context.authenticatedUser.emailAddress;
+      let password = context.authenticatedUser.password;
 
+      let course = this.state;
+      context.userController.createCourse(course,username,password)
+      .then( errors => {
+        if (!errors.length){
+          this.props.history.push('/');
+        } else{
+          this.setState({errors:errors})
+        }
+      });
+    
+  }
+  
   cancel = () => {
     this.props.history.push('/')
   }
@@ -31,10 +47,13 @@ class CreateCourse extends Component{
         [name]:value
       };
     });
+    
   }
 
 
-  render(){
+
+  render()
+  {
     var errors =''
     if (this.state.errors.length){
       errors = 
@@ -60,7 +79,7 @@ class CreateCourse extends Component{
               <div className="course--header">
                 <h4 className="course--label">Course</h4>
                 <div><input id="title" name="title" type="text" className="input-title course--title--input" placeholder="Course title..." value={this.state.title} onChange={this.change}/></div>
-                <p>By Joe Smith</p>
+                <p>By {this.state.fullName}</p>
               </div>
               <div className="course--description">
                 <div><textarea id="description" name="description" className="" placeholder="Course description..." onChange={this.change} value={this.state.description}></textarea></div>
@@ -80,7 +99,7 @@ class CreateCourse extends Component{
                 </ul>
               </div>
             </div>
-            <div className="grid-100 pad-bottom"><button className="button" type="submit">Create Course</button>
+            <div className="grid-100 pad-bottom"><button className="button" onClick={this.submit}>Create Course</button>
             <button className="button button-secondary" onClick={this.cancel}>Cancel</button></div>
           </form>
           </div>
