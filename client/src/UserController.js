@@ -29,9 +29,7 @@ class UserController {
   }
   
   async getCourse(courseId){
-    const response = await this.call_api(`/courses/${courseId}`,'GET');
-    return response;
-
+    return this.call_api(`/courses/${courseId}`,'GET');
   }
 
   async getCourses(){
