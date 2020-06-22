@@ -11,13 +11,12 @@ class Courses extends Component {
 
   componentDidMount(){
 
-    // Get the courses from the api
-    fetch(`${config.apiBaseUrl}/courses`)
-      .then(res => res.json())
-      .then(res => this.setState({courses:res})); 
-
-  }
-
+    const {context} = this.props;
+    context.userController.getCourses()
+    .then( res => this.setState({courses:res}))
+    .catch(err => this.props.history.push('/error'));
+    }
+  
   render(){
     var coursesList;
 
