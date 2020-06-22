@@ -5,7 +5,6 @@ var Course = require("../models").Course;
 const { check, validationResult } = require('express-validator');
 const bcryptjs = require('bcryptjs');
 const auth = require('basic-auth');
-var cors = require('cors')
 
 
 
@@ -169,23 +168,18 @@ check('description')
 .withMessage('Please provide a value for "description"')
 ],authenticateUser, asyncHandler(async (req, res) => {
     
-
        // check that have the required fields and that they are not empty
        const errors = validationResult(req);
-
        // Log out the error and end the chain
        if (!errors.isEmpty()){
          res.status(400).json({errors:errors.errors.map(e =>e.msg)}).end();
-       }
-   
-  
+       }  
   try{
       req.body.userId = req.currentUser.id;
-
       let course = await Course.create(req.body);
+      res.setHeader('loc','abc');
       res.location(`/courses/${course.id}`);
       res.status(201).end();
-
     }catch(error){
         // checking the error
         next(error); //pass to the error handler
@@ -214,7 +208,6 @@ check('description')
     if (!errors.isEmpty()){
       res.status(400).json({errors:errors.errors.map(e =>e.msg)}).end();
     }
-
 
     let course = await Course.findByPk(req.params.id);
     try{
