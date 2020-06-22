@@ -44,6 +44,21 @@ class UserController {
     }
   }
 
+  async createCourse(course,username,password){
+
+    const response = await this.call_api('/courses','POST',course,true,{username,password});
+
+    if (response.status===201){
+      // Return an empty array of errors to show success
+      return {errors:[]};
+    } else if (response.status ===400){
+      return response.json().then(data => data.errors);
+    } else{
+      throw Error;
+    }
+
+  }
+
   async updateCourse(course,username,password){
     let courseId = course.id;
     const response = await this.call_api(`/courses/${courseId}`,'PUT',course,true,{username,password})
