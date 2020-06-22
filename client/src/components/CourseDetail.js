@@ -44,7 +44,7 @@ class CourseDetail extends Component{
 
       var actionBars = null;
       // Only render the action bars if the user is logged in
-      if (context.authenticatedUser!== null && context.authenticatedUser.id === this.state.course.id){
+      if (context.authenticatedUser!== null && context.authenticatedUser.id === this.state.course.userId){
           actionBars = <>
                 <a href='javascript;' className="button" onClick={this.deleteCourse}>Delete Course</a>
                 <Link to= {`/courses/${this.state.course.id}/update`} className="button">Update Course</Link>
