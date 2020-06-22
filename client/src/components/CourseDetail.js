@@ -13,6 +13,7 @@ class CourseDetail extends Component{
 
 
   componentDidMount(){
+    //Fetch the course
     fetch(`${config.apiBaseUrl}/courses/${this.props.match.params.id}`)
     .then(res => res.json())
     .then(res => this.setState({course:res}))
@@ -24,7 +25,6 @@ class CourseDetail extends Component{
     const {context} = this.props;
     const username = context.authenticatedUser.emailAddress;
     const password = context.authenticatedUser.password;
-    console.log(`calling delete course in course detail with ${username} ${password}`)
     const status = await context.userController.deleteCourse(`/courses/${this.state.course.id}`,username,password);
 
     //success
