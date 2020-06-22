@@ -25,16 +25,54 @@ class UserController {
     }
     console.log(`Calling ${url} with ${JSON.stringify(options)} `)
 
-    // This returns 401 as error 
     return fetch(url, options);
   }
   
+  async getCourse(courseId){
+    const course = await this.call_api(`/courses/${courseId}`,'GET');
+    return course.json();
+
+
+  }
+
+  async getCourses(){
+    // Returns the list of courses 
+    const response = await this.call_api(`/courses`,'GET');
+
+    if (response.status===200) {
+      return response.json();
+    } 
+    else {
+      throw new Error();
+    }
+  }
+
+  async updateCourse(course,username,password){
+
+    let courseId = course.id;
+
+    const response = await this.call_api(`/courses/${courseId}`,'PUT',course,true,{username,password})
+
+    if (response.status===204){
+      console.log(`Course ${courseId} updated successfully`);
+      // Return an empty array of errors to show success
+      return {errors:[]}
+    } else if (response.status ===400){
+      return response.json().then(data => data.errors);
+    } else{
+      throw Error;
+    }
+
+    console.log(response.status);
+
+    console.log(course);
+
+  }
 
   async deleteCourse(path,username,password){
-    console.log(`Passing username ${username} password ${password}`)
+    // Deletes the course and returns the status code 
 
     const response = await this.call_api(path,"DELETE",null,true,{username:username,password:password});
-    console.log(response);
     return response.status;
   }
 
