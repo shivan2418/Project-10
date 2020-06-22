@@ -19,15 +19,22 @@ class CourseDetail extends Component{
 
   }
 
-  deleteCourse = (e) => {
+  deleteCourse = async (e) => {
     e.preventDefault();
     const {context} = this.props;
     const username = context.authenticatedUser.emailAddress;
     const password = context.authenticatedUser.password;
     console.log(`calling delete course in course detail with ${username} ${password}`)
-    context.userController.deleteCourse(`/courses/${this.state.course.id}`,username,password);
+    const status = await context.userController.deleteCourse(`/courses/${this.state.course.id}`,username,password);
 
-  
+    //success
+    if (status === 204){
+      this.props.history.push('/');
+      console.log(`Course ${this.state.course.id} deleted successfully`)
+    } else{
+      this.props.history.push('/error');
+    }
+
   }
 
   render() {
@@ -39,9 +46,8 @@ class CourseDetail extends Component{
       // Only render the action bars if the user is logged in
       if (context.authenticatedUser!== null && context.authenticatedUser.id === this.state.course.id){
           actionBars = <>
-                <a href='javascript;' onClick={this.deleteCourse}>delete</a>
-                {/* <Link to= {`/courses/${this.state.course.id}/update`} className="button">Update Course</Link> */}
-                <Link to= {`/courses/${this.state.course.id}/delete`}  className="button">Delete Course !</Link>
+                <a href='javascript;' className="button" onClick={this.deleteCourse}>Delete Course</a>
+                <Link to= {`/courses/${this.state.course.id}/update`} className="button">Update Course</Link>
             </>
       }
 
